@@ -102,7 +102,7 @@ grievease-bot/
 ├── docs/                 # Chat widget frontend — named "docs" specifically so
 │                         # GitHub Pages can serve it with zero config (see Deployment below)
 ├── docs_source/          # Documentation PDF
-├── Dockerfile, .dockerignore, render.yaml   # Backend deployment (Day 3)
+├── Dockerfile, .dockerignore, render.yaml   # Backend deployment
 ├── requirements.txt
 ├── .env.example
 ├── LICENSE
