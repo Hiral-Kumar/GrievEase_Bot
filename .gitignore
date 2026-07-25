@@ -5,6 +5,10 @@ __pycache__/
 .venv/
 venv/
 
+# Node (frontend/test_widget.js's dev-only dependency)
+node_modules/
+package-lock.json
+
 # Env / secrets
 .env
 

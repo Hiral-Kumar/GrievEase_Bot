@@ -12,6 +12,7 @@ architecture (Section 8) treats the Grievance API as a contract the chatbot
 integrates with, not something private to it.
 """
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from app.core.database import init_db
 from app.api import grievance, knowledge_base, chat
 
@@ -19,6 +20,23 @@ app = FastAPI(
     title="GrievEase Bot API",
     description="AI-powered conversational assistant for the GBU Grievance Management & Ticket Tracking System.",
     version="1.0.0",
+)
+
+# CORS: the frontend/ widget (Day 3) is a static HTML file that may be opened
+# directly, served from a different origin (e.g. GitHub Pages or a local
+# static server), or embedded in the student portal on a different domain
+# than this API — all of which trigger the browser's CORS check on the
+# /api/chat fetch() call. Wide open (allow_origins=["*"]) is fine here since
+# every endpoint is either read-only (categories, KB search) or scoped to
+# whatever student_id the caller supplies — there's no cookie/session-based
+# auth for CORS to protect in this prototype. A real deployment sitting
+# behind the actual GBU student portal's auth would restrict this to that
+# portal's exact origin instead.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
