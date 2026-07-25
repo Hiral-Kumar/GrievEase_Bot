@@ -66,11 +66,11 @@ Full request/response schemas are in the interactive docs at `/docs` once the se
 
 | Layer | Docs section | Code |
 |---|---|---|
-| Grievance Management API (mock) | §8 Integration | `app/api/grievance.py`, `app/services/grievance_service.py` |
-| Knowledge Base + RAG | §7 KB Structure | `app/knowledge_base/`, `app/services/rag_service.py` |
-| Dialogue Manager (intent + slot-filling) | §5 Conversation Flow | `app/core/intent_router.py`, `app/core/dialogue_manager.py` |
-| LLM Reasoning Layer | §6 Prompt Design | `app/services/llm_client.py` |
-| Chat Gateway | §4 Architecture, Fig. 1 | `app/api/chat.py` |
+| Grievance Management API (mock) | Sec 8 Integration | `app/api/grievance.py`, `app/services/grievance_service.py` |
+| Knowledge Base + RAG | Sec 7 KB Structure | `app/knowledge_base/`, `app/services/rag_service.py` |
+| Dialogue Manager (intent + slot-filling) | Sec 5 Conversation Flow | `app/core/intent_router.py`, `app/core/dialogue_manager.py` |
+| LLM Reasoning Layer | Sec 6 Prompt Design | `app/services/llm_client.py` |
+| Chat Gateway | Sec 4 Architecture, Fig. 1 | `app/api/chat.py` |
 
 ## Project Structure
 
