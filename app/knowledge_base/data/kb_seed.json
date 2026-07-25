@@ -1,0 +1,104 @@
+[
+  {
+    "id": "kb001",
+    "category": "process_faq",
+    "topic": "Resolution time",
+    "content": "Grievances are typically reviewed within 1 working day of submission and moved to 'In Progress' once assigned to the relevant department. Most grievances are resolved within 3 to 7 working days depending on complexity. Academic and Examination grievances may take slightly longer if they require faculty or exam-cell review."
+  },
+  {
+    "id": "kb002",
+    "category": "process_faq",
+    "topic": "Editing or withdrawing a grievance",
+    "content": "Once a grievance is submitted, its core details cannot be edited directly to preserve an accurate audit trail. If you need to add information, reply with the additional details and your Ticket ID, and it will be appended as a note. To withdraw a grievance, provide your Ticket ID and a withdrawal reason; a staff member will confirm and close it."
+  },
+  {
+    "id": "kb003",
+    "category": "process_faq",
+    "topic": "What happens after submission",
+    "content": "After submission you receive an email confirmation with your Ticket ID and the grievance status starts as 'Pending'. It is then reviewed and assigned to the relevant department, moving to 'In Progress'. You'll get an email whenever the status changes, and you can ask this chatbot for an update anytime using your Ticket ID."
+  },
+  {
+    "id": "kb004",
+    "category": "process_faq",
+    "topic": "Anonymous submission",
+    "content": "Grievances currently require a student ID and email so status updates and resolution communication can reach you. For sensitive matters such as harassment, you may request confidential handling — the details will only be visible to designated senior staff rather than the general admin queue."
+  },
+  {
+    "id": "kb005",
+    "category": "category_definition",
+    "topic": "Academic",
+    "content": "Academic grievances cover issues like incorrect internal marks, attendance discrepancies, course registration problems, or delays in academic record updates."
+  },
+  {
+    "id": "kb006",
+    "category": "category_definition",
+    "topic": "Hostel",
+    "content": "Hostel grievances cover issues within hostel premises: maintenance (electrical, plumbing, Wi-Fi), mess/food quality, room allocation disputes, and hostel staff conduct."
+  },
+  {
+    "id": "kb007",
+    "category": "category_definition",
+    "topic": "Examination",
+    "content": "Examination grievances cover issues such as incorrect exam results, re-evaluation requests, seating/admit card problems, or scheduling conflicts."
+  },
+  {
+    "id": "kb008",
+    "category": "category_definition",
+    "topic": "IT Infrastructure",
+    "content": "IT Infrastructure grievances cover campus Wi-Fi, computer lab equipment, portal/website access issues, or login problems with university systems."
+  },
+  {
+    "id": "kb009",
+    "category": "category_definition",
+    "topic": "Administrative",
+    "content": "Administrative grievances cover issues with certificates, fee receipts, transcript requests, scholarship processing, or other non-academic office paperwork."
+  },
+  {
+    "id": "kb010",
+    "category": "category_definition",
+    "topic": "Faculty",
+    "content": "Faculty grievances cover concerns about teaching quality, classroom conduct, or communication issues with a specific faculty member, handled with added confidentiality."
+  },
+  {
+    "id": "kb011",
+    "category": "category_definition",
+    "topic": "Harassment / Sensitive",
+    "content": "This category covers harassment, ragging, discrimination, or safety concerns. These grievances are automatically flagged for immediate review by senior staff and are never handled purely by automated systems."
+  },
+  {
+    "id": "kb012",
+    "category": "escalation_policy",
+    "topic": "When the bot escalates to a human",
+    "content": "The chatbot escalates to a human staff member whenever: the grievance falls under the Harassment/Sensitive category, the student's message indicates distress or urgency, the chatbot's confidence in understanding the request is low, or the student explicitly asks to speak to a person."
+  },
+  {
+    "id": "kb013",
+    "category": "contact_directory",
+    "topic": "IT Cell contact",
+    "content": "For issues outside the grievance system itself (e.g. website bugs, portal outages), students can contact the GBU IT Cell directly, which manages development, security, and monitoring of the university website and its systems."
+  },
+  {
+    "id": "kb014",
+    "category": "process_faq",
+    "topic": "Multiple grievances",
+    "content": "You can submit more than one grievance if you have unrelated issues, but if you already have an open grievance in the same category describing the same problem, the assistant will ask if you'd like to add to that existing ticket instead of creating a duplicate."
+  },
+  {
+    "id": "kb015",
+    "category": "process_faq",
+    "topic": "No email received",
+    "content": "If you don't receive a confirmation email within a few minutes of submitting, first check your spam folder. If it's still missing, ask the chatbot to resend the notification for your Ticket ID, or contact the IT Cell if the issue persists."
+  },
+  {
+    "id": "kb016",
+    "category": "sample_resolved_case",
+    "topic": "Hostel Wi-Fi outage (anonymized example)",
+    "content": "A student reported hostel block Wi-Fi down for over a week. The grievance was filed under Hostel/IT Infrastructure, assigned to the technical team within a day, and resolved in 3 working days after a router replacement — a typical timeline for infrastructure issues of this kind."
+  },
+  {
+    "id": "kb017",
+    "category": "sample_resolved_case",
+    "topic": "Internal marks discrepancy (anonymized example)",
+    "content": "A student noticed internal assessment marks were missing from the student portal. The grievance was routed to the Academic category, required faculty confirmation, and was resolved in 6 working days once the correct marks were verified and updated."
+  }
+]
