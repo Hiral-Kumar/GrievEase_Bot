@@ -116,11 +116,11 @@ These document real decisions and real bugs found during development — not jus
 <details>
 <summary><strong>Why TF-IDF instead of sentence-transformers/Chroma for RAG</strong></summary>
 
-The docs (Section 9) propose sentence-transformers + Chroma. This implementation uses **scikit-learn TF-IDF + cosine similarity with a stemming tokenizer** instead, deliberately:
+The docs (Section 9) propose sentence-transformers + Chroma. This implementation uses **scikit-learn TF-IDF + cosine similarity with a stemming tokeniser** instead, deliberately:
 
 - Sentence-transformer models download from Hugging Face on first use, needing open internet access not guaranteed in every grading/CI environment. TF-IDF needs zero downloads.
 - At a few dozen KB entries, keyword-level TF-IDF performs comparably to neural embeddings and is far easier to reason about and debug.
-- The retriever sits behind a stable `retrieve()` interface (`app/knowledge_base/retriever.py`), so swapping in embeddings later is a localized change, not a rewrite.
+- The retriever sits behind a stable `retrieve()` interface (`app/knowledge_base/retriever.py`), so swapping in embeddings later is a localised change, not a rewrite.
 
 It also includes a keyword-based **safety override**: queries mentioning harassment/ragging/abuse always surface the Harassment/Sensitive and Escalation Policy entries first, regardless of raw TF-IDF ranking. This fixes a real bug found during testing — a generic "Hostel" match was outranking the safety-relevant entry for *"someone is harassing me in the hostel."*
 </details>
@@ -136,7 +136,7 @@ The question-gate in `intent_router.py` specifically prevents *"can I submit mor
 <details>
 <summary><strong>A routing bug the LLM integration surfaced (and fixed)</strong></summary>
 
-The first version only consulted the LLM after the rule-based classifier had already decided the top-level intent was `SUBMIT_GRIEVANCE`. But a paraphrased complaint with no submit-trigger word and no keyword-matched category (e.g. *"the projector in my lecture hall hasn't worked all semester"*) gets classified as `FAQ` by elimination — so the LLM fallback was silently unreachable for exactly the case it was built for. Fixed by moving the check to the FAQ-miss path: if RAG finds no KB answer, the LLM gets one shot at recognizing an unrecognized complaint before the bot gives up with "I'm not sure."
+The first version only consulted the LLM after the rule-based classifier had already decided the top-level intent was `SUBMIT_GRIEVANCE`. But a paraphrased complaint with no submit-trigger word and no keyword-matched category (e.g. *"the projector in my lecture hall hasn't worked all semester"*) gets classified as `FAQ` by elimination — so the LLM fallback was silently unreachable for exactly the case it was built for. Fixed by moving the check to the FAQ-miss path: if RAG finds no KB answer, the LLM gets one shot at recognising an unrecognised complaint before the bot gives up with "I'm not sure."
 </details>
 
 <details>
@@ -150,22 +150,15 @@ The first version only consulted the LLM after the rule-based classifier had alr
 Two pieces, deployed separately (a static frontend and a Python API don't belong on the same host):
 
 ### Backend (Render, free tier — no credit card required)
+Since the API key of Claude is paid, and credits have not been added in the demo version so whenever a message that has no keyword match is sent, forcing it down the LLM path, It goes to rule-based behaviour instead of crashing.
+ `https://grievease-bot-api.onrender.com`. Test it: `https://grievease-bot-api.onrender.com/docs#/chat/chat_api_chat_post` should show the Swagger UI.
 
-1. Push this repo to GitHub (see the git history — it's already there if you're reading this from the repo).
-2. Go to [render.com](https://render.com), sign in with GitHub, click **New +** → **Blueprint**.
-3. Select this repo. Render reads `render.yaml` automatically and configures the service from the `Dockerfile` — no manual settings needed.
-4. The one thing Render *won't* set automatically: open the new service's **Environment** tab and add `ANTHROPIC_API_KEY` with your real key (it's marked `sync: false` in `render.yaml` specifically so it's never committed to the repo). Without it, the bot still works fully via the Step 4 rule-based paths — the LLM layer just won't activate.
-5. Deploy. Render gives you a URL like `https://grievease-bot-api.onrender.com`. Test it: `https://<your-url>.onrender.com/docs` should show the Swagger UI.
-
-Free-tier note: Render's free web services spin down after inactivity and take ~30-60 seconds to wake up on the next request — expected, not a bug, if your first demo message seems slow.
+Free-tier note: Render's free web services spin down after inactivity and take ~30-60 seconds to wake up on the next request — expected, not a bug, if the first demo message seems slow.
 
 ### Frontend (GitHub Pages — free, same repo)
 
-The chat widget lives in `docs/` rather than `frontend/` specifically because GitHub Pages' "Deploy from a branch" option only offers `/ (root)` or `/docs` as folder choices — it doesn't list arbitrary folder names, so `docs/` is the path of least resistance for a zero-config Pages deploy. (The Day 1 documentation PDF moved to `docs_source/` to make room.)
-
-1. In your GitHub repo: **Settings** → **Pages** → under "Build and deployment," set Source to "Deploy from a branch," branch `main`, folder `/docs`.
-2. Before it goes live, open `docs/index.html` and confirm the `API_BASE` line points at your Render URL (already done if you followed the backend step above).
-3. Commit and push. GitHub gives you a URL like `https://<your-username>.github.io/GrievEase_Bot/`.
+The chat widget lives in `docs/` rather than `frontend/` specifically because GitHub Pages' "Deploy from a branch" option only offers `/ (root)` or `/docs` as folder choices — it doesn't list arbitrary folder names, so `docs/` is the path of least resistance for a zero-config Pages deploy. (The documentation PDF moved to `docs_source/` to make room.)
+ Test it with the URL: `https://hiral-kumar.github.io/GrievEase_Bot/`
 
 That's the whole deployment: two free static/container hosts, one line of config to connect them.
 
