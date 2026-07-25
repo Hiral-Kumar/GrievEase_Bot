@@ -1,5 +1,5 @@
 /**
- * Loads the REAL frontend/index.html into jsdom and drives it exactly like
+ * Loads the REAL index.html into jsdom and drives it exactly like
  * a browser would (typing into inputs, clicking buttons), with `fetch`
  * mocked to return canned /api/chat responses instead of hitting a real
  * server. This catches DOM-wiring bugs (wrong element IDs, event listeners
@@ -7,7 +7,7 @@
  * check can't — while not depending on this sandbox's flaky localhost
  * networking.
  *
- * Run with: node frontend/test_widget.js
+ * Run with: node docs/test_widget.js
  */
 const fs = require("fs");
 const path = require("path");

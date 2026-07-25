@@ -1,0 +1,12 @@
+{
+  "name": "grievease-bot-frontend",
+  "version": "1.0.0",
+  "description": "Optional dev-only test harness for index.html — the widget itself is plain HTML/CSS/JS with no build step or dependencies at runtime. This file only exists so `npm install` can pull in jsdom to run test_widget.js.",
+  "private": true,
+  "scripts": {
+    "test": "node test_widget.js"
+  },
+  "devDependencies": {
+    "jsdom": "^24.0.0"
+  }
+}

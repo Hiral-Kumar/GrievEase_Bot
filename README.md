@@ -5,7 +5,7 @@ An AI-powered conversational assistant for the GBU Grievance Management & Ticket
 **Built for the GBU IT Cell Intern Recruitment — Screening Challenge 2026**
 Role: AI Chatbot Development & Deployment (Experienced Intern)
 
-> 📄 Full design documentation (architecture, conversation flow, prompt design, knowledge base structure) is in [`docs/GrievEase_Bot_Documentation.pdf`](docs/GrievEase_Bot_Documentation.pdf).
+> 📄 Full design documentation (architecture, conversation flow, prompt design, knowledge base structure) is in [`docs_source/GrievEase_Bot_Documentation.pdf`](docs_source/GrievEase_Bot_Documentation.pdf).
 
 ---
 
@@ -99,7 +99,10 @@ grievease-bot/
 │   │   └── retriever.py         # TF-IDF + stemming retriever, with safety override
 │   └── data/                    # SQLite DB file (generated at runtime, gitignored)
 ├── tests/                # 73 passing tests
-├── docs/                 # Day 1 documentation PDF
+├── docs/                 # Chat widget frontend (Day 3) — named "docs" specifically so
+│                         # GitHub Pages can serve it with zero config (see Deployment below)
+├── docs_source/          # Day 1 documentation PDF
+├── Dockerfile, .dockerignore, render.yaml   # Backend deployment (Day 3)
 ├── requirements.txt
 ├── .env.example
 ├── LICENSE
@@ -158,16 +161,18 @@ Free-tier note: Render's free web services spin down after inactivity and take ~
 
 ### Frontend (GitHub Pages — free, same repo)
 
-1. In your GitHub repo: **Settings** → **Pages** → under "Build and deployment," set Source to "Deploy from a branch," branch `main`, folder `/frontend`.
-2. Before it goes live, open `frontend/index.html` and change one line — `const API_BASE = "http://localhost:8000";` — to your Render URL from above.
-3. Commit that change and push. GitHub gives you a URL like `https://<your-username>.github.io/GrievEase_Bot/`.
+The chat widget lives in `docs/` rather than `frontend/` specifically because GitHub Pages' "Deploy from a branch" option only offers `/ (root)` or `/docs` as folder choices — it doesn't list arbitrary folder names, so `docs/` is the path of least resistance for a zero-config Pages deploy. (The Day 1 documentation PDF moved to `docs_source/` to make room.)
+
+1. In your GitHub repo: **Settings** → **Pages** → under "Build and deployment," set Source to "Deploy from a branch," branch `main`, folder `/docs`.
+2. Before it goes live, open `docs/index.html` and confirm the `API_BASE` line points at your Render URL (already done if you followed the backend step above).
+3. Commit and push. GitHub gives you a URL like `https://<your-username>.github.io/GrievEase_Bot/`.
 
 That's the whole deployment: two free static/container hosts, one line of config to connect them.
 
 ## Status
 
 ✅ **Backend complete** (Steps 1–6): mock Grievance API, RAG-backed Knowledge Base, Dialogue Manager, LLM Reasoning Layer, and the `/chat` endpoint — 73/73 tests passing.
-✅ **Frontend complete** (Day 3): chat widget (`frontend/index.html`), 18/18 DOM-level tests passing.
+✅ **Frontend complete** (Day 3): chat widget (`docs/index.html`), 18/18 DOM-level tests passing.
 🔜 **Deployment**: Dockerfile + `render.yaml` are ready — see [Deployment](#deployment) above for the actual click-by-click steps (requires my own GitHub/Render account, so this part is manual).
 
 ## License

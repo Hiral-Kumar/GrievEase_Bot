@@ -7,7 +7,7 @@ venv/
 .venv/
 tests/
 docs/
-frontend/
+docs_source/
 README.md
 LICENSE
 *.db
