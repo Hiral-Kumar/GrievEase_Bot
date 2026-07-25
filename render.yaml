@@ -1,0 +1,21 @@
+# Render Blueprint — lets Render auto-configure the backend service from
+# this repo with almost no manual setup: on render.com, "New +" -> "Blueprint",
+# point it at this GitHub repo, and Render reads this file automatically.
+# Chosen over Railway/Fly.io for the demo link specifically because Render's
+# free tier doesn't require a credit card, which matters for a student
+# screening submission. See README's Deployment section for the full
+# click-by-click steps, including the one manual step Render doesn't
+# automate: adding your ANTHROPIC_API_KEY as a secret (never commit it).
+services:
+  - type: web
+    name: grievease-bot-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false  # set manually in the Render dashboard — never commit real keys
+      - key: CLAUDE_MODEL
+        value: claude-sonnet-5
+      - key: DATABASE_URL
+        value: sqlite:///./app/data/grievance.db

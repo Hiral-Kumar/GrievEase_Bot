@@ -142,10 +142,33 @@ The first version only consulted the LLM after the rule-based classifier had alr
 `test_grievance_api.py` and `test_chat_api.py` both spin up a `TestClient(app)`, and both originally pointed the app at their own SQLite file via the `DATABASE_URL` env var. That works when either file runs alone — but `app.core.config.settings` and the DB engine are process-wide singletons created on first import, so whichever test file imported first silently "won," and the other file shared that same database without either test realizing it. Fixed with FastAPI's `app.dependency_overrides` instead, which gives each file a genuinely isolated engine regardless of import order. Verified stable across multiple full-suite runs and both import orders.
 </details>
 
+## Deployment
+
+Two pieces, deployed separately (a static frontend and a Python API don't belong on the same host):
+
+### Backend (Render, free tier — no credit card required)
+
+1. Push this repo to GitHub (see the git history — it's already there if you're reading this from the repo).
+2. Go to [render.com](https://render.com), sign in with GitHub, click **New +** → **Blueprint**.
+3. Select this repo. Render reads `render.yaml` automatically and configures the service from the `Dockerfile` — no manual settings needed.
+4. The one thing Render *won't* set automatically: open the new service's **Environment** tab and add `ANTHROPIC_API_KEY` with your real key (it's marked `sync: false` in `render.yaml` specifically so it's never committed to the repo). Without it, the bot still works fully via the Step 4 rule-based paths — the LLM layer just won't activate.
+5. Deploy. Render gives you a URL like `https://grievease-bot-api.onrender.com`. Test it: `https://<your-url>.onrender.com/docs` should show the Swagger UI.
+
+Free-tier note: Render's free web services spin down after inactivity and take ~30-60 seconds to wake up on the next request — expected, not a bug, if your first demo message seems slow.
+
+### Frontend (GitHub Pages — free, same repo)
+
+1. In your GitHub repo: **Settings** → **Pages** → under "Build and deployment," set Source to "Deploy from a branch," branch `main`, folder `/frontend`.
+2. Before it goes live, open `frontend/index.html` and change one line — `const API_BASE = "http://localhost:8000";` — to your Render URL from above.
+3. Commit that change and push. GitHub gives you a URL like `https://<your-username>.github.io/GrievEase_Bot/`.
+
+That's the whole deployment: two free static/container hosts, one line of config to connect them.
+
 ## Status
 
 ✅ **Backend complete** (Steps 1–6): mock Grievance API, RAG-backed Knowledge Base, Dialogue Manager, LLM Reasoning Layer, and the `/chat` endpoint — 73/73 tests passing.
-🔜 **Day 3**: chat widget frontend + deployment/demo link.
+✅ **Frontend complete** (Day 3): chat widget (`frontend/index.html`), 18/18 DOM-level tests passing.
+🔜 **Deployment**: Dockerfile + `render.yaml` are ready — see [Deployment](#deployment) above for the actual click-by-click steps (requires my own GitHub/Render account, so this part is manual).
 
 ## License
 
