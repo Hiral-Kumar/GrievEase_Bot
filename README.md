@@ -171,8 +171,8 @@ That's the whole deployment: two free static/container hosts, one line of config
 
 ## Status
 
-✅ **Backend complete** (Steps 1–6): mock Grievance API, RAG-backed Knowledge Base, Dialogue Manager, LLM Reasoning Layer, and the `/chat` endpoint — 73/73 tests passing.
-✅ **Frontend complete** (Day 3): chat widget (`docs/index.html`), 18/18 DOM-level tests passing.
+✅ **Backend complete** : mock Grievance API, RAG-backed Knowledge Base, Dialogue Manager, LLM Reasoning Layer, and the `/chat` endpoint — 73/73 tests passing.
+✅ **Frontend complete** : chat widget (`docs/index.html`), 18/18 DOM-level tests passing.
 🔜 **Deployment**: Dockerfile + `render.yaml` are ready — see [Deployment](#deployment) above for the actual click-by-click steps (requires my own GitHub/Render account, so this part is manual).
 
 ## License
@@ -181,4 +181,4 @@ MIT — see [LICENSE](LICENSE).
 
 ## Author
 
-[Your Full Name] — Applicant, AI Chatbot Development & Deployment (Experienced Intern)
+Hiral Kumar — Applicant, AI Chatbot Development & Deployment (Experienced Intern)
