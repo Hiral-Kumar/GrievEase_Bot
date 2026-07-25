@@ -30,11 +30,11 @@ cp .env.example .env             # optional: add your ANTHROPIC_API_KEY for the 
 uvicorn app.main:app --reload
 ```
 
-The API is now live at `http://localhost:8000`, with interactive docs (Swagger UI) at `http://localhost:8000/docs`.
+The API is now live at `https://grievease-bot-api.onrender.com`, with interactive docs (Swagger UI) at `https://grievease-bot-api.onrender.com/docs`.
 
 Try it immediately:
 ```bash
-curl -X POST http://localhost:8000/api/chat \
+curl -X POST https://grievease-bot-api.onrender.com/api/chat \
   -H "Content-Type: application/json" \
   -d '{"message": "My hostel wifi has not worked for a week", "student_id": "STU001"}'
 ```
@@ -99,9 +99,9 @@ grievease-bot/
 │   │   └── retriever.py         # TF-IDF + stemming retriever, with safety override
 │   └── data/                    # SQLite DB file (generated at runtime, gitignored)
 ├── tests/                # 73 passing tests
-├── docs/                 # Chat widget frontend (Day 3) — named "docs" specifically so
+├── docs/                 # Chat widget frontend — named "docs" specifically so
 │                         # GitHub Pages can serve it with zero config (see Deployment below)
-├── docs_source/          # Day 1 documentation PDF
+├── docs_source/          # Documentation PDF
 ├── Dockerfile, .dockerignore, render.yaml   # Backend deployment (Day 3)
 ├── requirements.txt
 ├── .env.example
