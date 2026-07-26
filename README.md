@@ -1,11 +1,16 @@
 # GrievEase Bot 🤖
 
-An AI-powered conversational assistant for the GBU Grievance Management & Ticket Tracking System.
+An AI-powered conversational assistant for the **GBU Grievance Management & Ticket Tracking System**, built for the GBU IT Cell Intern Recruitment Screening Challenge 2026.
 
-**Built for the GBU IT Cell Intern Recruitment — Screening Challenge 2026**
-Role: AI Chatbot Development & Deployment (Experienced Intern)
+**Role applied for:** AI Chatbot Development & Deployment (Experienced Intern)
+**Author:** Hiral Kumar
 
-> 📄 Full design documentation (architecture, conversation flow, prompt design, knowledge base structure) is in [`docs_source/GrievEase_Bot_Documentation.pdf`](docs_source/GrievEase_Bot_Documentation.pdf).
+🔗 **Live Demo:** [hiral-kumar.github.io/GrievEase_Bot](https://hiral-kumar.github.io/GrievEase_Bot/)
+🔗 **Backend API (interactive docs):** [grievease-bot-api.onrender.com/docs](https://grievease-bot-api.onrender.com/docs)
+🔗 **GitHub Repository:** [github.com/Hiral-Kumar/GrievEase_Bot](https://github.com/Hiral-Kumar/GrievEase_Bot)
+📄 **Full Design Documentation:** [`GrievEase_Bot_Documentation.pdf`](GrievEase_Bot_Documentation.pdf)
+
+> Note: the backend is deployed on Render's free tier, which spins down after inactivity. The first message may take 30-60 seconds to respond while it wakes up — this is expected.
 
 ---
 
@@ -20,6 +25,55 @@ A working, tested backend for a chatbot that sits in front of the Grievance Mana
 
 It's built as six layers (see [Architecture](#architecture--how-it-maps-to-the-docs) below), each independently testable, with **73 passing tests** and **zero required external dependencies to run** — the LLM layer degrades gracefully to rule-based behavior if no API key is configured.
 
+## Features
+
+| Requirement (from the challenge brief) | Implementation |
+|---|---|
+| Student Grievance Submission | Conversational slot-filling flow with confirmation before submission |
+| Auto-generated Ticket ID | `GBU-YYYY-XXXXXX` format, generated on submission |
+| Track Grievance Status by Ticket ID | Natural-language status lookup |
+| Admin Dashboard / Status Management | Status update API (Pending → In Progress → Resolved) |
+| Email Notifications | Triggered on submission and status change |
+| Responsive Design | Chat widget works on both desktop and mobile |
+| Assisting with FAQs (chatbot-specific) | Retrieval-grounded knowledge base with 17 entries across 5 categories |
+| Safety escalation (added innovation) | Harassment/ragging-related messages are automatically flagged and routed to a human, regardless of keyword ranking |
+| Graceful LLM fallback (added innovation) | The bot remains fully functional even if the LLM API is unavailable or uncredited |
+
+
+## Architecture
+
+```
+┌─────────────────┐     ┌──────────────────┐     ┌─────────────────────┐
+│  Chat Widget    │───▶│  /api/chat       │───▶ │  Dialogue Manager   │
+│  (docs/)        │     │  (FastAPI)       │     │  (intent + slots)   │
+└─────────────────┘     └──────────────────┘     └──────────┬──────────┘
+                                                              │
+                                    ┌─────────────────────────┼─────────────────────────┐
+                                    ▼                         ▼                         ▼
+                          ┌──────────────────┐     ┌──────────────────┐     ┌──────────────────┐
+                          │  Grievance API   │     │  Knowledge Base  │     │  LLM Reasoning   │
+                          │  (SQLite-backed) │     │  (TF-IDF + RAG)  │     │  (Claude API)    │
+                          └──────────────────┘     └──────────────────┘     └──────────────────┘
+```
+
+| Layer | Purpose | Code |
+|---|---|---|
+| Chat Gateway | Single client-facing endpoint | `app/api/chat.py` |
+| Dialogue Manager | Intent classification + slot-filling conversation flows | `app/core/intent_router.py`, `app/core/dialogue_manager.py` |
+| Grievance API | Mock of the core ticketing system (create/track/notify) | `app/api/grievance.py`, `app/services/grievance_service.py` |
+| Knowledge Base + RAG | Retrieval-grounded FAQ answers | `app/knowledge_base/`, `app/services/rag_service.py` |
+| LLM Reasoning Layer | Claude API for paraphrased-complaint understanding + FAQ synthesis | `app/services/llm_client.py` |
+
+## Tech Stack
+
+- **Backend:** Python, FastAPI, SQLAlchemy (SQLite)
+- **NLP / Retrieval:** scikit-learn (TF-IDF), NLTK (stemming)
+- **LLM:** Anthropic Claude API
+- **Frontend:** Plain HTML/CSS/JavaScript (no framework)
+- **Testing:** Pytest (backend, 73 tests), Node.js + jsdom (frontend, 18 tests)
+- **Deployment:** Docker + Render (backend), GitHub Pages (frontend)
+
+  
 ## Quick Start
 
 ```bash
@@ -62,7 +116,17 @@ Expected: **73 passed**. No API key or network access required — the LLM-depen
 
 Full request/response schemas are in the interactive docs at `/docs` once the server is running.
 
-## Architecture — how it maps to the docs
+## Key Design Decisions
+
+**Rule-based dialogue flow, with the LLM layered on top.** Intent classification and the Submit/Track flows are handled by keyword and regex matching first, not the LLM directly. This means the two data-critical flows (submitting a grievance, tracking a ticket) are deterministic and can't be derailed by an unpredictable model response. The LLM is only consulted when the rule-based layer genuinely can't classify a message — for example, a paraphrased complaint like *"the projector in my lecture hall hasn't worked all semester"* that doesn't match any keyword. This also means the bot remains fully functional even with no API key configured or no LLM credit available — the Anthropic account behind this deployment currently has no credit balance, and the bot still handles submissions, tracking, and FAQ lookups correctly through the rule-based and retrieval paths; only the paraphrased-complaint and natural-language-FAQ-synthesis features are inactive until credit is added.
+
+**TF-IDF instead of neural embeddings for the knowledge base.** The design docs propose sentence-transformers + a vector database for retrieval. This implementation uses scikit-learn's TF-IDF with a stemming tokenizer instead, since neural embedding models require downloading large files from Hugging Face on first use, which isn't guaranteed in every environment this might be evaluated or deployed in. At the scale of this knowledge base (a few dozen entries), TF-IDF retrieval performs comparably and is significantly easier to reason about, debug, and extend.
+
+**A safety override on top of retrieval ranking.** Messages mentioning harassment, ragging, or abuse always surface the Harassment/Sensitive category and Escalation Policy entries first, regardless of how a plain similarity score would rank them. This was added after testing showed that a generic category (e.g. "Hostel") could technically score higher in similarity than the safety-relevant entry for a message like *"someone is harassing me in the hostel"* — since safety-critical routing shouldn't depend purely on statistical ranking, a keyword-based check enforces the right entries surface regardless.
+
+**A question-gate to avoid false-triggering the submission flow.** A message like *"can I submit more than one grievance?"* contains the word "grievance" but is a question about the process, not a new complaint — the intent classifier specifically distinguishes statements reporting a problem from questions about the process before starting a new submission.
+
+## How it maps to the docs
 
 | Layer | Docs section | Code |
 |---|---|---|
