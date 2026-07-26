@@ -8,7 +8,7 @@ An AI-powered conversational assistant for the **GBU Grievance Management & Tick
 🔗 **Live Demo:** [hiral-kumar.github.io/GrievEase_Bot](https://hiral-kumar.github.io/GrievEase_Bot/)
 🔗 **Backend API (interactive docs):** [grievease-bot-api.onrender.com/docs](https://grievease-bot-api.onrender.com/docs)
 🔗 **GitHub Repository:** [github.com/Hiral-Kumar/GrievEase_Bot](https://github.com/Hiral-Kumar/GrievEase_Bot)
-📄 **Full Design Documentation:** [`GrievEase_Bot_Documentation.pdf`](GrievEase_Bot_Documentation.pdf)
+📄 **Full Design Documentation:** [`GrievEase_Bot_Documentation.docx`](GrievEase_Bot_Documentation.docx)
 
 > Note: the backend is deployed on Render's free tier, which spins down after inactivity. The first message may take 30-60 seconds to respond while it wakes up — this is expected.
 
